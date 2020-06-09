@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "parcel serve index.html",
     "test": "jest --watchAll",
-    "build": "npx parcel build js/main.js",
+    "build": "npx parcel build js/main.js --no-cache",
     "start": "http-server -c-1 dist"
   },
   "author": "",

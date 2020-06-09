@@ -3,36 +3,35 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Audio Player</title>
 
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <!-- for development -->
   <!-- <link rel="stylesheet" type="text/css" href="scss/main.scss"> -->
+  <!-- for production -->
   <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-  <div id="app">
-    <header class="header">
-      <span>
-        <a class="home">Audio Player</a>
-      </span>
-    </header>
-    <div class="canvas_container">
-      <canvas>
+  <header>
+    <h1>Audio Player</h1>
+  </header>
+  <main>
+    <canvas></canvas>
+    <audio id="player" src="prova.mp3"></audio>
+  </main>
+  <footer>
+    <img id="playpause" src="./icons/ic_play.svg" alt="Play/Pause">  
+  </footer>
 
-      </canvas>
-    </div>
-    <div class="controller">
-      <audio id="player" src="sex_pistols.mp3"></audio>
-      <div class="progress" id="progress"></div>
-      <div id="playpause"></div>
-    </div>
-  </div>
-
+  <!-- for development -->  
   <!-- <script src="js/main.js"></script> -->
-  <script src="main.js"></script>
 
+  <!-- for production -->
+  <script src="main.js"></script>
   <script>
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js');

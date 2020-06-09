@@ -1,39 +1,41 @@
 let context = null;
+let cWidth = null;
+let cHeight = null;
+let bufferLenght = null;
 
 self.addEventListener('message',(args)=>{
 
-    if(args.data.offscreenCanvas) context = args.data.offscreenCanvas.getContext('2d');
-    const dataArray = args.data.dataArray;
-    const bufferLenght = args.data.bufferLenght;
-    const cWidth = args.data.cWidth;
-    const cHeight = args.data.cHeight;
-    // const imageData = context.createImageData(cWidth, cHeight);
-    var barWidth = (cWidth / bufferLenght) * 2.5;
-    var barHeight;
-    var x = 0;
+    if(args.data.payload)
+    {
+        if(args.data.type === "registration")
+        {
+            context = args.data.payload.offscreenCanvas.getContext('2d');
 
-    for (var i = 0; i < bufferLenght; i++) {
-        barHeight = dataArray[i];
+            bufferLenght = args.data.payload.bufferLenght;
+            cWidth = args.data.payload.cWidth;
+            cHeight = args.data.payload.cHeight;
 
-        context.fillStyle = 'rgb(0,27,' + (barHeight + 45) + ')';
-        context.fillRect(x, cHeight - barHeight / 2, barWidth, barHeight);
-    
-        x += barWidth + 1;
+        }
+        else if(args.data.type === "data")
+        {
+            if(context)
+            {
+                const dataArray = args.data.payload.dataArray;
+                let barWidth = (cWidth / bufferLenght) * 2.5;
+                let barHeight;
+                let x = 0;
+            
+                context.fillStyle = '#aaaaaa';
+                context.fillRect(0, 0, cWidth, cHeight);
+
+                for (let i = 0; i < bufferLenght; i++)
+                {
+                    barHeight = dataArray[i];
+                    context.fillStyle = 'rgb(0,27,' + (barHeight + 45) + ')';
+                    context.fillRect(x, cHeight - barHeight / 2, barWidth, barHeight);
+                    x += barWidth + 1;
+                }
+            }            
+        }
     }
-
-    // for(let i = 0; i < imageData.data.length; i++){
-    //     imageData.data[i] = data[i];
-    // }
-    // context.putImageData(imageData, 0, 0);
 });
-
-
-// for (var i = 0; i < bufferLenght; i++) {
-//     barHeight = dataArray[i];
-
-
-//     canvasContext.fillStyle = 'rgb(0,27,' + (barHeight + 45) + ')';
-//     canvasContext.fillRect(x, cHeight - barHeight / 2, barWidth, barHeight);
-
-//     x += barWidth + 1;
-// }

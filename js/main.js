@@ -1,65 +1,59 @@
+import anime from 'animejs/lib/anime.es';
 import '../scss/main.scss'
+import ic_pause from '../icons/ic_pause.svg'
+import ic_play from '../icons/ic_play.svg'
+
 
 const worker = new Worker('./worker.js');
 const button = document.getElementById("playpause");
 const player = document.getElementById("player");
-
-button.onclick = function () {
-    player.play();
-    if (audioContext.state !== 'running') {
-        audioContext.resume();
-    }
-    restartAnimation();
-};
-
 const canvas = document.querySelector('canvas');
-// const canvasContext = canvas.getContext("2d");
-
 const cHeight = canvas.height;
 const cWidth = canvas.width;
+const rotation = anime({
+  targets: '#playpause',
+  rotate:'1turn',
+  duration:1000
+});
 
-var audioContext = new AudioContext();
-var analyser = audioContext.createAnalyser();
-var source = audioContext.createMediaElementSource(player);
+
+let isPlaying = false;
+button.onclick = function () {
+    if(isPlaying)
+    {
+        button.src = ic_play;
+        player.pause();
+        isPlaying = false;
+    }
+    else
+    {
+        button.src = ic_pause;
+        player.play();
+        isPlaying = true;
+        if (audioContext.state !== 'running') {
+            audioContext.resume();
+        }
+    }
+
+    rotation.restart();
+};
+
+const audioContext = new AudioContext();
+const analyser = audioContext.createAnalyser();
+const source = audioContext.createMediaElementSource(player);
 source.connect(analyser).connect(audioContext.destination);
 analyser.fftSize = 1024;
-var bufferLenght = analyser.frequencyBinCount;
-var dataArray = new Uint8Array(bufferLenght);
-// canvasContext.clearRect(0, 0, cWidth, cHeight);
+const bufferLenght = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLenght);
+
 const offscreenCanvas = canvas.transferControlToOffscreen();
-worker.postMessage({offscreenCanvas:offscreenCanvas, dataArray: dataArray}, [offscreenCanvas])
+const payload = {offscreenCanvas, cWidth, cHeight, bufferLenght};
+worker.postMessage({type:"registration", payload:payload }, [offscreenCanvas])
 
 function draw() {
-    var drawVisual = requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
     analyser.getByteFrequencyData(dataArray);
-    // canvasContext.fillStyle = '#f2f2f2';
-    // canvasContext.fillRect(0, 0, cWidth, cHeight);
-
-    worker.postMessage({dataArray: dataArray, bufferLenght: bufferLenght, cWidth: cWidth, cHeight:cHeight});
-
-    // for (var i = 0; i < bufferLenght; i++) {
-    //     barHeight = dataArray[i];
-
-
-    //     canvasContext.fillStyle = 'rgb(0,27,' + (barHeight + 45) + ')';
-    //     canvasContext.fillRect(x, cHeight - barHeight / 2, barWidth, barHeight);
-
-    //     x += barWidth + 1;
-    // }
-
+    worker.postMessage({type:"data", payload:{dataArray}});
 };
 
 draw();
-
-import anime from 'animejs/lib/anime.es';
-// import { worker } from 'cluster';
-
-var playpause_anime = anime({
-  targets: '#playpause',
-  rotate:'1turn',
-  duration:600
-});
-
-export function restartAnimation(){
-    playpause_anime.restart();
-}
