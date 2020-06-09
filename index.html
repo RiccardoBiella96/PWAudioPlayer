@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
 
-    <link rel="stylesheet" type="text/css" href="scss/main.scss">
+  <!-- <link rel="stylesheet" type="text/css" href="scss/main.scss"> -->
+  <link rel="stylesheet" href="main.css">
 </head>
-<body>
-    <div id="app">
-        <header class="header">
-            <span>
-                <a class="home">Audio Player</a>
-            </span>
-        </header>
-        <div class="canvas_container">
-          <canvas>
-  
-          </canvas>
-        </div>
-        <div class="controller">
-          <audio id="player" src="sex_pistols.mp3"></audio>
-          <div class="progress" id="progress"></div>
-          <div id ="playpause"></div>
-        </div>
-    </div>
 
-    <script src="js/main.js"></script>
-  </body>
+<body>
+  <div id="app">
+    <header class="header">
+      <span>
+        <a class="home">Audio Player</a>
+      </span>
+    </header>
+    <div class="canvas_container">
+      <canvas>
+
+      </canvas>
+    </div>
+    <div class="controller">
+      <audio id="player" src="sex_pistols.mp3"></audio>
+      <div class="progress" id="progress"></div>
+      <div id="playpause"></div>
+    </div>
+  </div>
+
+  <!-- <script src="js/main.js"></script> -->
+  <script src="main.js"></script>
+
+  <script>
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  </script>
+</body>
+
 </html>

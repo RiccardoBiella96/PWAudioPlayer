@@ -1,3 +1,5 @@
+import '../scss/main.scss'
+
 const worker = new Worker('./worker.js');
 const button = document.getElementById("playpause");
 const player = document.getElementById("player");

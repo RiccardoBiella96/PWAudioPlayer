@@ -1,10 +1,8 @@
 let context = null;
 
 self.addEventListener('message',(args)=>{
-    console.log("args: ",args);
 
     if(args.data.offscreenCanvas) context = args.data.offscreenCanvas.getContext('2d');
-    console.log("CONTEXT: ", context);
     const dataArray = args.data.dataArray;
     const bufferLenght = args.data.bufferLenght;
     const cWidth = args.data.cWidth;

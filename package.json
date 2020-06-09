@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "serve": "parcel serve index.html",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "build": "npx parcel build js/main.js",
+    "start": "http-server -c-1 dist"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +20,7 @@
   },
   "dependencies": {
     "animejs": "^3.2.0",
+    "http-server": "^0.12.3",
     "web-audio-api": "^0.2.2"
   }
 }
